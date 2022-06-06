@@ -9,10 +9,18 @@ contract BmeHf1 {
     address[2] public owners;
     address public hier;
 
-    constructor() payable {
+    constructor(address partner, address _hier) payable {
         owners[0] = msg.sender;
+        owners[1] = partner;
+        hier = _hier;
+
         lockedUntil = block.timestamp + 1 minutes;
     }
+    /*
+    function WealthManager(address partner, address _hier) public onlyOwner {
+        owners[1] = partner;
+        hier = _hier;
+    } */
 
     modifier onlyOwner() {
         require(msg.sender == owners[0], "Nem te mondod meg");
@@ -27,14 +35,6 @@ contract BmeHf1 {
     modifier isHier() {
         require(msg.sender == hier, "Nem Hier, haha");
         _;
-    }
-
-
-
-
-    function WealthManager(address partner, address _hier) public onlyOwner {
-        owners[1] = partner;
-        hier = _hier;
     }
 
     //******
@@ -74,5 +74,4 @@ contract BmeHf1 {
     function RemainingTime() public view returns(uint) {
         return(lockedUntil - block.timestamp);
     }
-
 }
